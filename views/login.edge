@@ -1,0 +1,46 @@
+@layout('layouts/app')
+
+@section('content')
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('/img/home-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="site-heading">
+            <h1>Login to your account</h1>
+            {{--  <span class="subheading">A Blog Theme by Start Bootstrap</span>  --}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  {{--  create new post   --}}
+  <div class="container">
+      <div class="row">
+          <div class="col-md-8 offset-md-2">
+              <form action="/users/login" method="POST" enctype="multipart/form-data">
+                <div class="control-group">
+                  <div class="form-group floating-label-form-group controls">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" class="form-controls" placeholder="Email"> 
+                  </div>
+                </div>
+                <div class="control-group">
+                    <div class="form-group floating-label-form-group controls">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" class="form-controls" placeholder="Password">
+                    </div>
+                </div>
+                <div class="form-group my-4 text-center">
+                    <button class="btn btn-primary">Login</button>
+                </div>
+              </form>
+          </div>
+
+      </div>
+  </div>
+
+@endsection
