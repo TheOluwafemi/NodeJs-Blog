@@ -24,7 +24,7 @@ const loginUserController = require('./controllers/loginUser')
 const app = new express()
 
 // create database connection
-mongoose.connect('mongodb://localhost/node-js-blog',  { useNewUrlParser: true })
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/node-js-blog',  { useNewUrlParser: true })
 
 const mongoStore = connectMongo(expressSession);
 
@@ -66,7 +66,7 @@ app.get('/post/:id', viewPostController);
 app.post('/users/register', storeUserController);
 app.post('/users/login', loginUserController);
 
-
-app.listen(4000, () => {
+const port = process.env.PORT || 4000;
+app.listen(port, () => {
     console.log('App listening on port 4000')
 })
