@@ -24,7 +24,9 @@ const loginUserController = require('./controllers/loginUser')
 const app = new express()
 
 // create database connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/node-js-blog',  { useNewUrlParser: true })
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/node-js-blog',  { 
+    useNewUrlParser: true
+});
 const PORT = process.env.PORT || 3000;
 
 const mongoStore = connectMongo(expressSession);
