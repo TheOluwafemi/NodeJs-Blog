@@ -25,11 +25,14 @@ const app = new express()
 
 // create database connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/node-js-blog',  { useNewUrlParser: true })
+const PORT = process.env.PORT || 3000;
 
 const mongoStore = connectMongo(expressSession);
 
 app.use(expressSession({
     secret: 'secret',
+    resave: true,
+    saveUninitialized: true,
     store: new mongoStore({
         mongooseConnection: mongoose.connection
     })
@@ -66,7 +69,6 @@ app.get('/post/:id', viewPostController);
 app.post('/users/register', storeUserController);
 app.post('/users/login', loginUserController);
 
-const port = process.env.PORT || 4000;
-app.listen(port, () => {
-    console.log('App listening on port 4000')
-})
+app.listen(PORT, () => {
+    console.log(`App listening on port ${PORT}`)
+});
