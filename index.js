@@ -1,5 +1,6 @@
 // import modules 
 const express = require('express')
+const edge = require('edge.js')
 const path = require('path')
 const bodyParser = require('body-parser')
 const expressEdge = require('express-edge')
@@ -7,6 +8,7 @@ const mongoose = require('mongoose')
 const fileUpload = require('express-fileupload')
 const expressSession = require('express-session')
 const connectMongo = require('connect-mongo')
+const connectFlash = require('connect-flash')
 
 // import controller functions
 const createPostController = require('./controllers/createPost')
@@ -18,7 +20,9 @@ const viewPostController = require('./controllers/viewPost')
 const createUserController = require('./controllers/createUser')
 const storeUserController = require('./controllers/storeUser')
 const loginController = require('./controllers/login')
+const logOutController = require('./controllers/logoutUser')
 const loginUserController = require('./controllers/loginUser')
+const redirectIfAutheticated = require('./middleware/redirectIfAuthenticated')
 
 // create new instance of express as app
 const app = new express()
@@ -28,6 +32,8 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/node-js-blog', 
     useNewUrlParser: true
 });
 const PORT = process.env.PORT || 3000;
+
+app.use(connectFlash());
 
 const mongoStore = connectMongo(expressSession);
 
@@ -59,17 +65,27 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // set views folder as the source of the edge templates 
 app.set('views', `${__dirname}/views`)
 
+app.use('*', (req, res, next) => {
+    edge.global('auth', req.session.userId)
+    next()
+})
+
 // ***** Routes *****
 app.get('/', homeController);
-app.get('/auth/register', createUserController);
-app.get('/auth/login', loginController);
+app.get('/auth/register', redirectIfAutheticated, createUserController);
+app.get('/auth/login', redirectIfAutheticated, loginController);
 app.get('/post/new', auth, createPostController);
+app.get('/auth/logout', auth, logOutController)
 app.post('/post/store', auth, validateSavePost, savePostController);
 app.get('/about', aboutPageController);
 app.get('/contact', contactController);
 app.get('/post/:id', viewPostController);
-app.post('/users/register', storeUserController);
-app.post('/users/login', loginUserController);
+app.post('/users/register', redirectIfAutheticated, storeUserController);
+app.post('/users/login', redirectIfAutheticated, loginUserController);
+app.use((req, res) => {
+    res.render('not-found')
+});
+
 
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`)
