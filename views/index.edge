@@ -37,6 +37,13 @@
           </div>
           <hr>
         @endeach
+
+        @if(!post|length)
+          <div class="site-heading">
+            <h1>Create New Post</h1>
+            <span class="subheading">Click on new post in the menu</span>
+          </div>
+        @endif
         <!-- Pager -->
         <!--  <div class="clearfix">
           <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
