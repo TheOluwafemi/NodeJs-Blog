@@ -39,8 +39,8 @@ app.use(connectFlash());
 
 cloudinary.config({
     api_key: process.env.CLOUDINARY_NAME,
-    api_secret: CLOUDINARY_API_SECRET,
-    cloud_name: CLOUDINARY_API_KEY
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    cloud_name: process.env.CLOUDINARY_API_KEY
 })
 
 const mongoStore = connectMongo(expressSession);
