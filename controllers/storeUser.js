@@ -9,6 +9,6 @@ module.exports = (req, res) => {
             req.flash('data', req.body)
             return res.redirect('/auth/register')     
         }
-        res.redirect('/')
+        res.redirect('/auth/login')
     })
 }
