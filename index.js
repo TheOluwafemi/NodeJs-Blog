@@ -1,10 +1,12 @@
 // import modules 
+require ('dotenv').config();
 const express = require('express')
 const edge = require('edge.js')
 const path = require('path')
 const bodyParser = require('body-parser')
 const expressEdge = require('express-edge')
 const mongoose = require('mongoose')
+const cloudinary = require('cloudinary')
 const fileUpload = require('express-fileupload')
 const expressSession = require('express-session')
 const connectMongo = require('connect-mongo')
@@ -28,12 +30,18 @@ const redirectIfAutheticated = require('./middleware/redirectIfAuthenticated')
 const app = new express()
 
 // create database connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/node-js-blog',  { 
+mongoose.connect(process.env.MONGODB_URI, { 
     useNewUrlParser: true
 });
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 app.use(connectFlash());
+
+cloudinary.config({
+    api_key: process.env.CLOUDINARY_NAME,
+    api_secret: CLOUDINARY_API_SECRET,
+    cloud_name: CLOUDINARY_API_KEY
+})
 
 const mongoStore = connectMongo(expressSession);
 
